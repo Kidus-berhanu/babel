@@ -1,0 +1,39 @@
+import React, { useState } from 'react';
+
+interface CompilerState {
+  code: string;
+  compiledCode: string;
+}
+
+const CompilerApp: React.FC = () => {
+  const [state, setState] = useState<CompilerState>({
+    code: '',
+    compiledCode: ''
+  });
+
+  const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>): void => {
+    setState({ ...state, code: event.target.value });
+  };
+
+  const handleCompile = (): void => {
+    // use a library like Babel to compile the code to a supported version
+    const compiled = babel.transform(state.code, {
+      presets: ['@babel/preset-env']
+    });
+
+    setState({ ...state, compiledCode: compiled.code });
+  };
+
+  return (
+    <div>
+      <h1>JavaScript Code Compiler</h1>
+      <label htmlFor="code">Enter your code:</label>
+      <textarea id="code" onChange={handleChange} value={state.code} />
+      <button onClick={handleCompile}>Compile</button>
+      <label htmlFor="compiledCode">Compiled code:</label>
+      <textarea id="compiledCode" readOnly value={state.compiledCode} />
+    </div>
+  );
+};
+
+export default CompilerApp;
